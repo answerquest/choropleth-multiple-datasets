@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>WISE Pune Map</title>
+<meta charset="utf-8" />
+<link class="cssdeck" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" class="cssdeck">
+<link rel="stylesheet" href="lib/leaflet.css" /> <!-- original: https://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css -->
+<link rel="stylesheet" href="lib/leaflet.label.css">
+<link rel="stylesheet" href="lib/Control.FullScreen.css">
+<style>
+.nav-header {
+	font-size: 100%;
+	color: black;
+	font-weight: normal;
+}
+.box {
+	//border:1px solid black;
+    padding: 6px 8px;
+    font: 14px/16px Calibri, Arial, Helvetica, sans-serif;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Calibri, Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+	//width: 400px;
+}
+.legend {
+	width: 16px;
+	height: 16px;
+	//float: left;
+	display:inline-block;
+	margin-right: 0px;
+	opacity: 0.7;
+	vertical-align:middle; 
+}
+.sidegradient {
+	height: 16px;
+	display:inline-block;
+	margin-right: 0px;
+	vertical-align:middle; 
+} 
+
+</style>
+</head>
+<body>
+<div class="col-sm-4 box"> 
+	
+	<div style=" text-align:center; padding: 1px"><h4 class="text-uppercase">Pune Wise Indexes <a href="#" title="Instructions" data-toggle="popover" data-trigger="focus" data-content="Click on the headings on the left pane to open them and see their parameters. Clicking on a parameter will load its values on the map. The prabhags are colour-shaded from light to dark depending on their parameter values.<br>Move your mouse over a prabhag to see its value on a label as well in the info box at bottom left of the map.<br>Use the +/- buttons to zoom the map in or out.<br>You can change the background layer by moving your mouse over the icon in top right side of the map.<br>Press the fullscreen button on bottom right of the map to see it in full screen mode.<br><small>Note: This map is best viewed from a laptop or desktop computer.</small>" data-html="true"><small><span class="glyphicon glyphicon-question-sign"></span></small></a>
+</h4></div>
+    <div style="overflow-y: scroll; overflow-x: hidden; height: 530px;" class="container col-sm-12">
+        <ul class="nav nav-list list-group" id="sidepanel-menu">
+            <li><label class="tree-toggler nav-header">Loading, please wait..</label> 
+                <ul class="nav nav-list tree"  id="sidepanel-menu">
+                </ul>
+            </li>
+            <li class="divider"></li>
+        </ul>
+    </div>
+</div>
+<div class="col-sm-8">
+<div id="map" style="height:550px;"></div>
+<div id="wardsList"></div>
+<div class="info" style="width:300px; padding: 0 12px 0; height:180px; overflow-y: auto; position:absolute; top:350px; left:25px">
+	<h4></h4>
+	<span id="sidepanel-indicator"></span>
+	<br><br>
+	<div id="sidepanel-data"></div>
+	<div id="sidepanel-download"></div>
+	<div id="loading"></div>
+	</div>
+</div>
+
+
+<script src="data/wise_index_parameters.js"></script> <!-- Pre-loading WISE Parameters array -->
+<script src="lib/leaflet.js"></script> <!-- Orginal: https://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js -->
+<script src='lib/leaflet-omnivore.min.js'></script> <!--Original: https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js -->
+<script src="lib/leaflet.label.js"></script>
+<script src="lib/papaparse.min.js"></script> <!-- from https://papaparse.com -->
+<script src="lib/Control.FullScreen.js"></script> <!-- From https://github.com/brunob/leaflet.fullscreen -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<script>
+var SECTORFLAG = ""; //profile, swm, sanitation, publicamenities, streetlights, roads
+var INDEXFLAG = ""; // y (small y) for yes; or leave blank. any other value results in a No.
+/* filters that will change the sector, or will tell if only indexes need to be shown */
+
+/* obtaining parameters from URL. Like: wise-map.html?sector=sanitation&index=y from https://stackoverflow.com/a/2405630/4355695 */
+var urlParam = function(name, w){
+    w = w || window;
+    var rx = new RegExp('[\&|\?]'+name+'=([^\&\#]+)'),
+        val = w.location.search.match(rx);
+    return !val ? '':val[1];
+}
+INDEXFLAG = urlParam('index');
+SECTORFLAG = urlParam('sector');
+
+console.log('INDEXFLAG = ' + INDEXFLAG + '\n SECTORFLAG = ' + SECTORFLAG);
+
+var DATAPATH = "data/";
+var wardMAX = 76;
+var wardColumn = 'prabhag_no';
+// this color (below!) is shaded in or out for the choropleths using function decideOpacity() look it up on https://www.w3schools.com/colors/colors_picker.asp.
+var mainColor = 'rgb(19, 96, 185)', mainRGB= '19, 96, 185';
+var borderColor = 'black', activeborderColor = 'white';
+
+/* set up the map*/
+var osmLink = '<a href="https://openstreetmap.org">OpenStreetMap</a>';
+var mapboxUrl = 'https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png';
+var MBAttrib = '&copy; ' + osmLink + ' Contributors & <a href="https://www.mapbox.com/about/maps/">Mapbox</a>';
+
+var MBstreets = L.tileLayer(mapboxUrl, {id: 'nikhilsheth.m0mlpl2d', attribution: MBAttrib}),
+	MBsatlabel = L.tileLayer(mapboxUrl, {id: 'nikhilsheth.m0mmaa87', attribution: MBAttrib}),
+	MBsat = L.tileLayer(mapboxUrl, {id: 'nikhilsheth.m0mni8e7', attribution: MBAttrib}),
+	MBemerald = L.tileLayer(mapboxUrl, {id: 'nikhilsheth.m0mmebk6', attribution: MBAttrib}),
+	MBrun = L.tileLayer(mapboxUrl, {id: 'nikhilsheth.m0mmicn2', attribution: MBAttrib}),
+	MBlight = L.tileLayer(mapboxUrl, {id: 'nikhilsheth.m0mmobne', attribution: MBAttrib}),
+	MBbw = L.tileLayer(mapboxUrl, {id: 'nikhilsheth.m0mn13df', attribution: MBAttrib}),
+	MBdark = L.tileLayer(mapboxUrl, {id: 'nikhilsheth.jme9hi44', attribution: MBAttrib}),
+	MBpencil = L.tileLayer(mapboxUrl, {id: 'nikhilsheth.m0mn5lf5', attribution: MBAttrib}),
+	MBpirates = L.tileLayer(mapboxUrl, {id: 'nikhilsheth.m0mn8b72', attribution: MBAttrib}),
+	MBwheatpaste = L.tileLayer(mapboxUrl, {id: 'nikhilsheth.m0mnld61', attribution: MBAttrib}),
+	MBcomic = L.tileLayer(mapboxUrl, {id: 'nikhilsheth.m0mo16hg', attribution: MBAttrib}),
+	
+	OsmIndia = L.tileLayer(mapboxUrl, {id: 'openstreetmap.1b68f018', attribution: MBAttrib});
+
+	var baseLayers = {
+	"OpenStreetMap.IN": OsmIndia,
+//	"OpenStreetMap": osmMap,
+//	"OSM Landscape": landMap,
+//	"Stamen Toner": stamentoner,
+//	"Stamen Toner-Lite": stamenlite,
+//	"Stamen Toner-Hybrid": stamenhybid,
+//	"Stamen Toner-Labels": stamenlabels,
+//	"Stamen Toner-Lines": stamenlines,
+//	"Watercolor": stamenwater,
+	"Mapbox Streets": MBstreets,
+	"Mapbox Satellite w/labels": MBsatlabel ,
+//	"Mapbox Satellite": MBsat ,
+//	"Mapbox Emerald": MBemerald ,
+//	"Mapbox Run,Cycle": MBrun ,
+	"Mapbox Light": MBlight ,
+//	"Mapbox Black and White": MBbw ,
+	"Mapbox Dark": MBdark ,
+//	"Mapbox Pencil": MBpencil ,
+//	"Mapbox Pirates": MBpirates ,
+//	"Mapbox Wheatpaste": MBwheatpaste ,
+//	"Mapbox Comic": MBcomic ,
+//	"Google Maps Roads": googleLayer,
+//	"Google Maps Satellite": googleLayerSat
+};
+
+var map = L.map('map', {
+	zoomControl: false,
+	scrollWheelZoom: false,
+	fullscreenControl: true,
+	fullscreenControlOptions: {
+		position: 'bottomright'
+	},
+    layers: [OsmIndia] //only add one! put the rest in the baselayers group
+	}
+)
+.setView([18.52,73.85], 12)
+.on('overlayremove', function(e) {  // to reset the side panel
+	document.getElementById('sidepanel-content').innerHTML = '';
+});
+new L.Control.Zoom({ position: 'bottomright' }).addTo(map);
+
+var overlays = {
+	//"Electoral Wards": wards
+};
+var layerControl = L.control.layers(baseLayers, overlays, {collapsed: true}).addTo(map); //changed to selectLayers() so that layers panel doesn't get too big.
+
+// MAP setting up done.
+
+/* ############################# */
+/* parameters variable preloaded from data/wise_parameters.js */
+//write code for populating sidepanel-menu from this parameters json.
+/*
+        <ul class="nav nav-list">
+            <li><label class="tree-toggler nav-header">Header 1</label>
+                <ul class="nav nav-list tree">
+                    <li><a href="#">Link</a></li>
+                    <li><a href="#">Link</a></li>
+                     </ul>
+            </li>
+*/                  
+var menu = '';
+	
+/*Filtering parameters according to sector and index flags : SECTORFLAG = "Profile"; INDEXFLAG = "y"; */
+if ( SECTORFLAG ) parameters = parameters.filter( function(data){return data['sector'] == SECTORFLAG || data['sector'] == 'overall' ;} );
+//console.log(JSON.stringify(parameters));
+if ( INDEXFLAG == 'y') parameters = parameters.filter( function(data){return data['index'] == 'y';} );
+//console.log('Here is the filtered parameters: ' + JSON.stringify(parameters));
+
+if ( ! parameters.length ) console.log("Error.. please check the sector and index flags given.. there is a mismatch and there aren't any parameters to show now.");
+
+for (var i in parameters) {
+	if(! parameters[i]['param'] ) { 
+		// if it's a heading
+		var selectedFlag = "";
+		if( i == 0) selectedFlag = " selected"; // if it's the first thing, mark it as selected
+		menu += ' <li><label class="tree-toggler nav-header list-group-item' + selectedFlag + '">' + parameters[i]['disp'] + '</label><ul class="nav nav-list tree">';
+	}
+	else  { // for param item
+		menu += '<li class="list-group-item"><a href="#" rel="menu" onclick="F1(\'' + parameters[i]['param'] + '\')"><b>' + parameters[i]['param'] + ': </b>' + parameters[i]['disp'] + '</a></li>';
+	}
+	
+	if ( i == parameters.length -1 )  { menu += ''; /* console.log("whole list ended"); */ }
+	else 
+		if ( ! parameters[parseInt(i)+1]['param'] ) 
+	//if the NEXT row is a header row, close this group
+		//{ menu += '</ul></li><li class="divider"></li>';
+		//{ menu += '</ul></li><hr>';
+		{ menu += '</ul></li>';
+		//console.log("group ended"); 
+		}
+} // menu populating loop over
+
+$('#sidepanel-menu').html(menu);
+
+//###########################################
+
+var choroLayer = new L.geoJson(null);
+
+function F1(param) {
+	var chosenOne = parameters.filter( function(data){return data['param'] == param;} );
+	//console.log('The chosen one is ' + JSON.stringify(chosenOne[0]));
+	var column = chosenOne[0]['column'];
+	var units = chosenOne[0]['units'];
+	var disp = chosenOne[0]['disp'];
+	
+	//LOADING status message:
+	$("#loading").html('<small>loading, please wait...</small>');
+	$("#sidepanel-download").html('<small><a href="' + DATAPATH + chosenOne[0]['spreadsheet'] + '">Download data</a></small>');
+	
+	Papa.parse(DATAPATH + chosenOne[0]['spreadsheet'], {
+		download: true,
+		header: true,
+		dynamicTyping: true,
+		complete: function(results) {
+			//console.log('Filter this! :: ' + JSON.stringify( results.data ));
+			var results2 = results.data.filter( function(data){return parseFloat(data[column]) || data[column] === 0;} );
+			
+			//console.log('\nAfter filtering:\n' + JSON.stringify( results2 ));
+			var results3 = [];
+			for ( var i=1; i <= wardMAX; i++) {
+				var results4 = results2.filter( function(data){return data[wardColumn] == i;} );
+				var last = results4.length - 1;
+				if (last != -1) results3.splice(0,0,results4[last]); //insert latest entry into results4
+				}
+			//console.log('\nAfter filtering and removing repetitions:\n' + JSON.stringify( results3 ));
+			
+			//so, our array holding the choropleth values is results3
+			
+			if ( results3.length == 0 ) { //in case we don't have data, just exit the function, don't even bother reloading the map, etc.
+				$("#wardsList").html('<p style="color:red"><snall>No data received from any Prabhag for ' + param + ': ' + disp + '</smnall></p>'); 
+				$("#sidepanel-data").html(''); 
+				//return; 
+				}
+			else {
+				var wardsList = [];
+				for( var k in results3) {
+					wardsList[k] = results3[k][wardColumn];
+				}
+				$("#wardsList").html(wardsList.length == wardMAX ? '<small>Data collected for all Prabhags.</small>' : '<small>Data collected for Prabhag(s): ' + wardsList.reverse().join(', ') + '. Data not available for Prabhag(s): ' + nonPrabhag(wardsList) +'</small>');
+			}
+			
+			var min,max;
+			/* for indexes, min and max are 0 and 1 only */
+			if (chosenOne[0]['index'] == 'y' ) { min = 0;  max = 1; }
+			else {
+				min = Math.min.apply(Math,results3.map(function(o){return parseFloat(o[column]);}));
+			    max = Math.max.apply(Math,results3.map(function(o){return parseFloat(o[column]);}));
+			}
+			//console.log('\nmin = ' + min + '; max = ' + max);
+			var showIndicator = showpalette(min,max) + ' ' + chosenOne[0]['units'] + '<br><br>' + param + ": " + disp;
+			
+			//Clearing any existing data out first
+			choroLayer.clearLayers();
+			layerControl.removeLayer(choroLayer);
+			
+			//now we define the geoJson layer
+			choroLayer = L.geoJson(null, {
+				onEachFeature: function(feature, layer) { //below code will be executed for each item in the layer
+					
+					var results5 = results3.filter( function(data){return data[wardColumn] == feature.properties['wardnum'];} );
+					//console.log( 'results5 for ' + feature.properties['wardnum'] + ' : ' + JSON.stringify(results5) );
+					
+					if ( results5[0] ) 	var choroplethValue = Math.round( parseFloat(results5[0][column]) * 100) / 100 ;
+					//console.log( 'choroplethValue : ' + choroplethValue);
+					
+					var showData = 'Prabhag: <b>' + feature.properties.wardnum + '</b><br>' + param + ': <b>' + (choroplethValue>=0 ? choroplethValue + ' ' + units : 'data not available') + '</b>';
+										
+					popupOptions = {maxWidth: 300};
+					
+					//layer.bindPopup('Parameter: '+ param + ": " + disp + '<br>' + showData , popupOptions);
+					var labelText = showData;
+					layer.bindLabel(labelText).addTo(map);
+					
+					layer.setStyle({
+						weight: 1,
+						opacity: 1,
+						color: borderColor,
+						dashArray: '0',
+						//fillOpacity: 0.5,
+						//fillColor: decideColor(choroplethValue,min,max) 
+						fillOpacity: decideOpacity(choroplethValue,min,max),
+						fillColor: mainColor // '#2b8cbe' 
+					});
+											//highlight
+					function highlightFeature(e) {
+						var layer = e.target;
+						layer.setStyle({
+							weight: 2,
+							color: activeborderColor,
+							dashArray: '0',
+							fillOpacity: 0.1
+						});
+						if (!L.Browser.ie && !L.Browser.opera) {
+							layer.bringToFront();
+						}
+						$("#sidepanel-indicator").html(showIndicator);
+						$("#sidepanel-data").html(showData);
+						
+					}
+							//reset function
+					function resetHighlight(e) {
+						var layer = e.target;
+						layer.setStyle({
+							weight: 1,
+							color: borderColor,
+							dashArray: '0',
+							//fillOpacity: 0.5
+							fillOpacity: decideOpacity(choroplethValue,min,max)
+						});
+					}	
+					layer.on({
+						mouseover: highlightFeature,
+						mouseout: resetHighlight,
+					});
+				} //END OF ON EACH FEATURE
+				
+			}); //END of wards geojson layer definition
+			
+			//now just define the layer n load it!
+			omnivore.geojson(DATAPATH+'pune-electoral-wards.geojson', null, choroLayer)
+			.on('ready', function() {
+				//LOADING status message:
+				$("#loading").html('');
+			});
+			
+			choroLayer.addTo(map);
+			layerControl.addOverlay(choroLayer, param+':'+disp);
+			
+			$("#sidepanel-indicator").html(showIndicator);
+			$("#sidepanel-data").html('');
+			
+			
+					
+		}, // END of Papa.parse complete() function
+		
+		error: function() {
+			console.log("Error. Could not load " + chosenOne[0][DATAPATH + 'spreadsheet']);
+			//LOADING status message:
+			$("#loading").html('<small>Error. Could not load ' + param + '</small>');
+		}
+	}); // END of Papa.parse
+	
+} // end of main function
+
+
+// check using https://www.colorhexa.com or https://www.color-hex.com
+//var palette = ['#BD0026','#E31A1C','#FC4E2A','#FD8D3C','#FEB24C','#FED976','#FFEDA0']; // red shades, dark to light,  7 choropleth colors, from https://leafletjs.com/examples/choropleth-example.html
+
+//var palette = ['#0e4687','#1876e1','#5d9fea','#b9d5f6']; // blue shared. dark to light, from https://www.color-hex.com/color/1876e1
+
+//var palette = ['#00786c','#009688','#32ab9f','#99d5cf','#cceae7']; // bluish green, from https://www.color-hex.com/color-palette/2971
+
+var palette = ['#00441b','#7ac77b','#f7fcf5']; // used by avadhut
+
+/* Function to return color based on value, min and max limits, using 5 buckets */
+function decideColor(value, min, max) {
+	var percent = (value - min) / (max - min);
+	console.log('value = ' + value + '; percent = ' + percent);
+	return value >= 0.80 ? palette[0] :
+		   value >= 0.675 ? palette[1] :
+		   value >= 0.55 ? palette[2] :
+		   '#fff';
+/*
+	return value >= .75 ? palette[0] :
+		   value >= .50 ? palette[1] :
+		   value >= .25 ? palette[2] :
+		   value >= 0 ? palette[3] :
+*/						'#fff'  ; //white for no value
+		   
+/*	old, 7 red buckets
+	return 	value >= (min + 6*range/7) ? palette[0] :
+			value >= (min + 5*range/7) ? palette[1] :
+			value >= (min + 4*range/7) ? palette[2] :
+			value >= (min + 3*range/7) ? palette[3] :
+			value >= (min + 2*range/7) ? palette[4] :
+			value >= (min + 1*range/7) ? palette[5] :
+			value >=  min              ? palette[6] :
+										'#fff' ; //white for no value
+*/
+/* old, 5 buckets
+	return 	value >= (min + 4*range/5) ? '#800026' :
+			value >= (min + 3*range/5) ? '#E31A1C' :
+			value >= (min + 2*range/5) ? '#FD8D3C' :
+			value >= (min + 1*range/5) ? '#FEB24C' :
+			value >=  min              ? '#FED976' :
+										'#000' ;
+*/
+
+}
+
+function decideOpacity(value, min, max) {
+	if(value === 0) return 0.2;
+	else if (! value) return 0;
+	var percent = 0.2 + 0.7*(value-min)/(max-min);
+	return percent;
+}
+
+function showpalette(min,max) {
+var paletteBar = '';
+/*
+phasing out fixed colors for now and doing varying transparency with just one color
+for (var x=6; x>=0; x--) {
+	paletteBar += '<i class="legend" style="background:' + palette[x] + '"></i>';
+}
+*/
+paletteBar = '&nbsp;<span class="sidegradient" style="width:120px; ' +
+	'background: ' + mainColor + 
+	'; background: -webkit-linear-gradient(left,rgba(' + mainRGB + ',0.2),rgba('+mainRGB+',0.9)); ' + /*Safari 5.1-6*/
+	'background: -o-linear-gradient(right,rgba('+mainRGB+',0.2),rgba('+mainRGB+',0.9));' + /*Opera 11.1-12*/
+	'background: -moz-linear-gradient(right,rgba('+mainRGB+',0.2),rgba('+mainRGB+',0.9));' + /*Fx 3.6-15*/
+	'background: linear-gradient(to right, rgba('+mainRGB+',0.2),rgba('+mainRGB+',0.9));' + /*Standard*/
+	'"></span>&nbsp;';
+/* from https://www.w3schools.com/css/css3_gradients.asp
+	background: red;
+	background: -webkit-linear-gradient(left,rgba(255,0,0,0),rgba(255,0,0,1)); //Safari 5.1-6
+	background: -o-linear-gradient(right,rgba(255,0,0,0),rgba(255,0,0,1)); //Opera 11.1-12
+	background: -moz-linear-gradient(right,rgba(255,0,0,0),rgba(255,0,0,1)); //Fx 3.6-15
+	background: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1)); //Standard
+*/
+
+return '' + min + paletteBar + max +'';
+}
+
+function nonPrabhag (list) {
+	var n=0, nonList=[];
+	for (var i=1; i<= wardMAX; i++) {
+		if( n >= list.length ) break;
+		if ( i != parseInt(list[n]) ) nonList.push(i);
+		else n++;
+		}
+	return nonList.join(', ');
+}
+
+$(document).ready(function () {
+	//from https://cssdeck.com/labs/twitter-bootstrap-plain-collapsible-tree-menu
+	$('label.tree-toggler').click(function () {
+		$(this).parent().children('ul.tree').toggle(300);
+	});
+	//modified to collapse everything (fold-all) at beginning: https://cssdeck.com/labs/fialo63a, posted as answer on stackoverflow: https://stackoverflow.com/a/33547340/4355695
+	$('label.tree-toggler').parent().children('ul.tree').toggle(1000);
+	$('label.selected').parent().children('ul.tree').toggle(1000);
+	$('[data-toggle="popover"]').popover(); 
+});
+
+$("a[rel=menu]")
+// prevent scrolling to top of page when clicking on a popover. from https://stackoverflow.com/questions/13755033/how-to-fix-scrolling-with-twitter-bootstrap-and-popover
+    .click(function(e) {
+        e.preventDefault();
+     });
+// Contain the popover within the body NOT the element it was called in.
+$('[data-toggle="popover"]').popover({
+    container: 'body'
+});
+
+console.log(parameters[1]['param']);
+F1(parameters[1]['param']);
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+column,disp,param,units,sector,spreadsheet,index,orig
+,Overall,,,overall,,y,
+prabhag_index,Prabhag Index,Pri,,overall,googlecsv/index_main.csv,y,https://docs.google.com/spreadsheets/d/1vFBKErlod2F-YpSyc629YHVQ83bz3XV5UUvg5dLsv4s
+,Prabhag Profile,,,profile,,y,
+area_index,Area Index,Pri1,,profile,googlecsv/index_profile.csv,y,https://docs.google.com/spreadsheets/d/1PgLic6myMLkSwZ628P7eifYXxGJ0pEMRJfVSqHmZsds
+population_index,Population Index,Pri2,,profile,googlecsv/index_profile.csv,y,https://docs.google.com/spreadsheets/d/1PgLic6myMLkSwZ628P7eifYXxGJ0pEMRJfVSqHmZsds
+slum_area_index,Slum Area Index,Pri3,,profile,googlecsv/index_profile.csv,y,https://docs.google.com/spreadsheets/d/1PgLic6myMLkSwZ628P7eifYXxGJ0pEMRJfVSqHmZsds
+slum_hh_index,Slum Hh Index,Pri4,,profile,googlecsv/index_profile.csv,y,https://docs.google.com/spreadsheets/d/1PgLic6myMLkSwZ628P7eifYXxGJ0pEMRJfVSqHmZsds
+structure_index,Structure Index,Pri5,,profile,googlecsv/index_profile.csv,y,https://docs.google.com/spreadsheets/d/1PgLic6myMLkSwZ628P7eifYXxGJ0pEMRJfVSqHmZsds
+,Solid Waste Management,,,swm,,y,
+door_to_door_garbage_collection_index,Door To Door Garbage Collection Index,SWMi1,,swm,googlecsv/index_swm.csv,y,https://docs.google.com/spreadsheets/d/1V6BffNFc1wUDgS_DYjBujEGcNc7bDP2a4P4skFdVqZ8
+gate_to_gate_garbage_collection_index,Gate To Gate Garbage Collection Index,SWMi2,,swm,googlecsv/index_swm.csv,y,https://docs.google.com/spreadsheets/d/1V6BffNFc1wUDgS_DYjBujEGcNc7bDP2a4P4skFdVqZ8
+waste_collection_index,Waste Collection Index,SWMi3,,swm,googlecsv/index_swm.csv,y,https://docs.google.com/spreadsheets/d/1V6BffNFc1wUDgS_DYjBujEGcNc7bDP2a4P4skFdVqZ8
+informal_waste_collection_points_index,Informal Waste Collection Points Index,SWMi4,,swm,googlecsv/index_swm.csv,y,https://docs.google.com/spreadsheets/d/1V6BffNFc1wUDgS_DYjBujEGcNc7bDP2a4P4skFdVqZ8
+final_solid_waste_management_index,Final Solid Waste Management Index,SWMi5,,swm,googlecsv/index_swm.csv,y,https://docs.google.com/spreadsheets/d/1V6BffNFc1wUDgS_DYjBujEGcNc7bDP2a4P4skFdVqZ8
+,Sanitation,,,sanitation,,y,
+societies_drainage_connection_index,Societies Drainage Connection Index,SANi1,,sanitation,googlecsv/index_sanit.csv,y,https://docs.google.com/spreadsheets/d/1c48xTyWugU33b_y_amoO048Vr9otheAKTStruzSijsQ
+slums_drainage_connection_index,Slums Drainage Connection Index,SANi2,,sanitation,googlecsv/index_sanit.csv,y,https://docs.google.com/spreadsheets/d/1c48xTyWugU33b_y_amoO048Vr9otheAKTStruzSijsQ
+chawls_drainage_connection_index,Chawls Drainage Connection Index,SANi3,,sanitation,googlecsv/index_sanit.csv,y,https://docs.google.com/spreadsheets/d/1c48xTyWugU33b_y_amoO048Vr9otheAKTStruzSijsQ
+community_toilet_index,Community Toilet Index,SANi4,,sanitation,googlecsv/index_sanit.csv,y,https://docs.google.com/spreadsheets/d/1c48xTyWugU33b_y_amoO048Vr9otheAKTStruzSijsQ
+public_toilet_index,Public Toilet Index,SANi5,,sanitation,googlecsv/index_sanit.csv,y,https://docs.google.com/spreadsheets/d/1c48xTyWugU33b_y_amoO048Vr9otheAKTStruzSijsQ
+final_sanitation_index,Final Sanitation Index,SANi6,,sanitation,googlecsv/index_sanit.csv,y,https://docs.google.com/spreadsheets/d/1c48xTyWugU33b_y_amoO048Vr9otheAKTStruzSijsQ
+,Public Amenities,,,publicamenities,,y,
+anganwadi_index,Anganwadi Index,PAi1,,publicamenities,googlecsv/index_publicamenities.csv,y,https://docs.google.com/spreadsheets/d/1Dr2CerXzz4ixq0Q5FqTmx7kBRl0N_kpPv2dw2o2BGW0
+school_index,School Index,PAi2,,publicamenities,googlecsv/index_publicamenities.csv,y,https://docs.google.com/spreadsheets/d/1Dr2CerXzz4ixq0Q5FqTmx7kBRl0N_kpPv2dw2o2BGW0
+primary_health_center_index,Primary Health Center Index,PAi3,,publicamenities,googlecsv/index_publicamenities.csv,y,https://docs.google.com/spreadsheets/d/1Dr2CerXzz4ixq0Q5FqTmx7kBRl0N_kpPv2dw2o2BGW0
+nagari_suvidha_kendra_index,Nagari Suvidha Kendra Index,PAi4,,publicamenities,googlecsv/index_publicamenities.csv,y,https://docs.google.com/spreadsheets/d/1Dr2CerXzz4ixq0Q5FqTmx7kBRl0N_kpPv2dw2o2BGW0
+virangula_kendra_index,Virangula Kendra Index,PAi5,,publicamenities,googlecsv/index_publicamenities.csv,y,https://docs.google.com/spreadsheets/d/1Dr2CerXzz4ixq0Q5FqTmx7kBRl0N_kpPv2dw2o2BGW0
+gym_index,Gym Index,PAi6,,publicamenities,googlecsv/index_publicamenities.csv,y,https://docs.google.com/spreadsheets/d/1Dr2CerXzz4ixq0Q5FqTmx7kBRl0N_kpPv2dw2o2BGW0
+garden_index,Garden Index,PAi7,,publicamenities,googlecsv/index_publicamenities.csv,y,https://docs.google.com/spreadsheets/d/1Dr2CerXzz4ixq0Q5FqTmx7kBRl0N_kpPv2dw2o2BGW0
+night_shelter_index,Night Shelter Index,PAi8,,publicamenities,googlecsv/index_publicamenities.csv,y,https://docs.google.com/spreadsheets/d/1Dr2CerXzz4ixq0Q5FqTmx7kBRl0N_kpPv2dw2o2BGW0
+public_amenities_index,Public Amenities Index,PAi9,,publicamenities,googlecsv/index_publicamenities.csv,y,https://docs.google.com/spreadsheets/d/1Dr2CerXzz4ixq0Q5FqTmx7kBRl0N_kpPv2dw2o2BGW0
+,Street Lights,,,streetlights,,y,
+street_lights_index,Street Lights Index,SLi1,,streetlights,googlecsv/index_streetlights.csv,y,https://docs.google.com/spreadsheets/d/1VwQghQiUQGqP5k1WPl_dAzZ8Qys07Ci7elAdY-Ph5CA
+sustainable_street_lights_index,Sustainable Street Lights Index,SLi2,,streetlights,googlecsv/index_streetlights.csv,y,https://docs.google.com/spreadsheets/d/1VwQghQiUQGqP5k1WPl_dAzZ8Qys07Ci7elAdY-Ph5CA
+final_electricity_index,Final Electricity Index,SLi3,,streetlights,googlecsv/index_streetlights.csv,y,https://docs.google.com/spreadsheets/d/1VwQghQiUQGqP5k1WPl_dAzZ8Qys07Ci7elAdY-Ph5CA
+,Roads,,,roads,,y,
+paved_roads_index,Paved Roads Index,Rdi1,,roads,googlecsv/index_roads.csv,y,https://docs.google.com/spreadsheets/d/1S_n1rizTDpz9Qq2OUe7euNDUHF4Fv6whRpqmr-ZzWoc
+usable_footpath_index,Usable Footpath Index,Rdi2,,roads,googlecsv/index_roads.csv,y,https://docs.google.com/spreadsheets/d/1S_n1rizTDpz9Qq2OUe7euNDUHF4Fv6whRpqmr-ZzWoc
+strom_water_drainage_index,Strom Water Drainage Index,Rdi3,,roads,googlecsv/index_roads.csv,y,https://docs.google.com/spreadsheets/d/1S_n1rizTDpz9Qq2OUe7euNDUHF4Fv6whRpqmr-ZzWoc
+road_index,Road Index,Rdi4,,roads,googlecsv/index_roads.csv,y,https://docs.google.com/spreadsheets/d/1S_n1rizTDpz9Qq2OUe7euNDUHF4Fv6whRpqmr-ZzWoc
+,Prabhag Profile (data),,,profile,,,
+area,Prabhag Area,Pr1,sq km,profile,googlecsv/index_profile.csv,,https://docs.google.com/spreadsheets/d/1PgLic6myMLkSwZ628P7eifYXxGJ0pEMRJfVSqHmZsds
+population,Prabhag Population,Pr2,,profile,googlecsv/index_profile.csv,,https://docs.google.com/spreadsheets/d/1PgLic6myMLkSwZ628P7eifYXxGJ0pEMRJfVSqHmZsds
+slums_area,Slum Area in Prabhag,Pr3,sq m,profile,googlecsv/index_profile.csv,,https://docs.google.com/spreadsheets/d/1PgLic6myMLkSwZ628P7eifYXxGJ0pEMRJfVSqHmZsds
+slum_hh,Slum House-holds in Prabhag,Pr4,,profile,googlecsv/index_profile.csv,,https://docs.google.com/spreadsheets/d/1PgLic6myMLkSwZ628P7eifYXxGJ0pEMRJfVSqHmZsds
+,Solid Waste Management (data),,,swm,,,
+%_of_hh_covered_under_door_to_door_collection,Door to door collection percenatge,Swm1,%,swm,googlecsv/index_swm.csv,,https://docs.google.com/spreadsheets/d/1V6BffNFc1wUDgS_DYjBujEGcNc7bDP2a4P4skFdVqZ8
+%_of_hh_under_gate_collection,Gate to gate collection percentage,Swm2,%,swm,googlecsv/index_swm.csv,,https://docs.google.com/spreadsheets/d/1V6BffNFc1wUDgS_DYjBujEGcNc7bDP2a4P4skFdVqZ8
+total_waste_collected_in_tons,Total waste collected,Swm3,tons,swm,googlecsv/index_swm.csv,,https://docs.google.com/spreadsheets/d/1V6BffNFc1wUDgS_DYjBujEGcNc7bDP2a4P4skFdVqZ8
+total_waste_generated_in_tons,Total waste generated,Swm4,tons,swm,googlecsv/index_swm.csv,,https://docs.google.com/spreadsheets/d/1V6BffNFc1wUDgS_DYjBujEGcNc7bDP2a4P4skFdVqZ8
+number_of_informal_points_where_solid_waste_gets_accumulated_data,Number of informal points where solid waste gets accumulated (Chronic Spots),Swm5,,swm,googlecsv/index_swm.csv,,https://docs.google.com/spreadsheets/d/1V6BffNFc1wUDgS_DYjBujEGcNc7bDP2a4P4skFdVqZ8
+,Sanitation (data),,,sanitation,,,
+%_of_hh_with_underground_drainage_connection_in_society_data,Percentage of households with underground drainage connection in societies,San1,%,sanitation,googlecsv/index_sanit.csv,,https://docs.google.com/spreadsheets/d/1c48xTyWugU33b_y_amoO048Vr9otheAKTStruzSijsQ
+%_hh_with_underground_drainage_connection_in_slums_data,Percentage of households with underground drainage connection in slums,San2,%,sanitation,googlecsv/index_sanit.csv,,https://docs.google.com/spreadsheets/d/1c48xTyWugU33b_y_amoO048Vr9otheAKTStruzSijsQ
+%_of_hh_with_underground_drainage_connection_in_chawls_and_gaothan_data,Percentage of households with underground drainage connection in chawl & gaothan,San3,%,sanitation,googlecsv/index_sanit.csv,,https://docs.google.com/spreadsheets/d/1c48xTyWugU33b_y_amoO048Vr9otheAKTStruzSijsQ
+number_of_community_toilet_seats,Number of community toilet seats,San4,,sanitation,googlecsv/index_sanit.csv,,https://docs.google.com/spreadsheets/d/1c48xTyWugU33b_y_amoO048Vr9otheAKTStruzSijsQ
+number_of_free_public_toilet_seats_for_female,Number of free public toilet seats for female,San5,,sanitation,googlecsv/index_sanit.csv,,https://docs.google.com/spreadsheets/d/1c48xTyWugU33b_y_amoO048Vr9otheAKTStruzSijsQ
+number_of_paid_public_toilet_seats_for_male,Number of paid toilet seats for male,San6,,sanitation,googlecsv/index_sanit.csv,,https://docs.google.com/spreadsheets/d/1c48xTyWugU33b_y_amoO048Vr9otheAKTStruzSijsQ
+number_of_paid_public_toilet_seats_for_female,Number of paid toilet seats for female,San7,,sanitation,googlecsv/index_sanit.csv,,https://docs.google.com/spreadsheets/d/1c48xTyWugU33b_y_amoO048Vr9otheAKTStruzSijsQ
+number_of_residents_not_covered_with_toilet_seats,Number of residents not covered with toilet seats,San8,,sanitation,googlecsv/index_sanit.csv,,https://docs.google.com/spreadsheets/d/1c48xTyWugU33b_y_amoO048Vr9otheAKTStruzSijsQ
+,Public Amenities (data),,,publicamenities,,,
+anganwadi,Anganwadi,PA1,,publicamenities,googlecsv/index_publicamenities.csv,,https://docs.google.com/spreadsheets/d/1Dr2CerXzz4ixq0Q5FqTmx7kBRl0N_kpPv2dw2o2BGW0
+school,School,PA2,,publicamenities,googlecsv/index_publicamenities.csv,,https://docs.google.com/spreadsheets/d/1Dr2CerXzz4ixq0Q5FqTmx7kBRl0N_kpPv2dw2o2BGW0
+primary_health_center,Primary Health Center,PA3,,publicamenities,googlecsv/index_publicamenities.csv,,https://docs.google.com/spreadsheets/d/1Dr2CerXzz4ixq0Q5FqTmx7kBRl0N_kpPv2dw2o2BGW0
+nagari_suvidha_kendra,Nagari Suvidha Kendra,PA4,,publicamenities,googlecsv/index_publicamenities.csv,,https://docs.google.com/spreadsheets/d/1Dr2CerXzz4ixq0Q5FqTmx7kBRl0N_kpPv2dw2o2BGW0
+virangula_kendra,Virangula Kendra,PA5,,publicamenities,googlecsv/index_publicamenities.csv,,https://docs.google.com/spreadsheets/d/1Dr2CerXzz4ixq0Q5FqTmx7kBRl0N_kpPv2dw2o2BGW0
+gym,Gym,PA6,,publicamenities,googlecsv/index_publicamenities.csv,,https://docs.google.com/spreadsheets/d/1Dr2CerXzz4ixq0Q5FqTmx7kBRl0N_kpPv2dw2o2BGW0
+garden,Garden,PA7,,publicamenities,googlecsv/index_publicamenities.csv,,https://docs.google.com/spreadsheets/d/1Dr2CerXzz4ixq0Q5FqTmx7kBRl0N_kpPv2dw2o2BGW0
+night_shelter,Night Shelter,PA8,,publicamenities,googlecsv/index_publicamenities.csv,,https://docs.google.com/spreadsheets/d/1Dr2CerXzz4ixq0Q5FqTmx7kBRl0N_kpPv2dw2o2BGW0
+,Street Lights (data),,,streetlights,,,
+number_of_poles,Number of poles,SL1,,streetlights,googlecsv/index_streetlights.csv,,https://docs.google.com/spreadsheets/d/1VwQghQiUQGqP5k1WPl_dAzZ8Qys07Ci7elAdY-Ph5CA
+value_for_sustainable_street_lights,Percentage of bulbs connected to sustainable sources and LED bulbs,SL2,%,streetlights,googlecsv/index_streetlights.csv,,https://docs.google.com/spreadsheets/d/1VwQghQiUQGqP5k1WPl_dAzZ8Qys07Ci7elAdY-Ph5CA
+,Roads (data),,,roads,,,
+value_for_paved_roads_index,Percentage of roads paved (tar or concrete),Rd1,%,roads,googlecsv/index_roads.csv,,https://docs.google.com/spreadsheets/d/1S_n1rizTDpz9Qq2OUe7euNDUHF4Fv6whRpqmr-ZzWoc
+value_for_usable_footpaths_index,Percentage of roads with footpath (on one side or on both sides),Rd2,%,roads,googlecsv/index_roads.csv,,https://docs.google.com/spreadsheets/d/1S_n1rizTDpz9Qq2OUe7euNDUHF4Fv6whRpqmr-ZzWoc
+value_for_strom_water_drainage_index,Percentage of road length with storm water drainage line,Rd6,%,roads,googlecsv/index_roads.csv,,https://docs.google.com/spreadsheets/d/1S_n1rizTDpz9Qq2OUe7euNDUHF4Fv6whRpqmr-ZzWoc
