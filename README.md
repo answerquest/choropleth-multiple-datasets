@@ -2,7 +2,7 @@
 
 A choropleth map that can cycle through multiple sets of values pulled in from different CSVs. Using leaflet, papa parse, jquery, bootstrap. Works in client-side Javascript.
 
-See it in action: [wise-map.html](https://answerquest.github.io/choropleth-multiple-datasets/)
+See it in action: [wise-map.html](https://answerquest.github.io/choropleth-multiple-datasets/wise-map.html)
 
 [See the code on github](https://github.com/answerquest/choropleth-multiple-datasets)
 
