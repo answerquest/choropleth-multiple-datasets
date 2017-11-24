@@ -12,3 +12,5 @@ See it in action: [wise-map.html](https://answerquest.github.io/choropleth-multi
 
 ### Links
 * [Story Generator](https://cbgaindia.github.io/story-generator/) created by Open Budgets India / CBGA India : Goes some levels beyond this one; and I can't quite understand the inner workings yet but it's interesting, especially the multiple years and non-map graph comparison where you can pick any two or more places and compare them closely.
+
+[<-- Back to answerquest.github.io](https://answerquest.github.io/)
